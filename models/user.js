@@ -47,10 +47,10 @@ const User =  sequelize.define('User',{
     timestamps: true,
 });
 
-// const creationTable  =  sequelize.sync().then(() =>{
-//     console.log("les tables ont été creés avec succces")
-// }).catch((Error) =>{
-//       console.log("il ya une erreur lors de la creation de tables")
-// });
+const creationTable  =  sequelize.sync().then(() =>{
+    console.log("les tables ont été creés avec succces")
+}).catch((Error) =>{
+      console.log("il ya une erreur lors de la creation de tables")
+});
 
 export default User;
