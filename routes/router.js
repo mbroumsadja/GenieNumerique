@@ -1,3 +1,4 @@
+
 import express from "express";
 import multer from 'multer';
 import path from 'path';
@@ -15,17 +16,15 @@ const storage = multer.diskStorage({
     cb(null, 'uploads/')
   },
    filename: (req, file, cb) => {
-   cb(null,`${Date.now()}-${file.originalname}`)
+   cb(null, Date.now() + path.extname(file.originalname))
   },
 })
 
 const upload = multer({ storage: storage });
 
 router.post('/reg',upload.single('profile'),saveUser,(req,res) =>{
-     req.body.lienProfile = req.file.filename;
-     res.redirect('/');
+     console.log(req.file.filename);
 });
-
 
 router.get('/registre',(req, res) =>{
      res.render('registre');
