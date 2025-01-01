@@ -1,0 +1,33 @@
+{
+  "name": "etudiants",
+  "version": "1.0.0",
+  "description": "application pour enregistre les etudiants",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon server.js",
+    "start": "node server.js"
+  },
+  "author": "mbroumsadja",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^5.1.1",
+    "body-parser": "^1.20.3",
+    "dotenv": "^16.4.5",
+    "ejs": "^3.1.10",
+    "express": "^4.21.1",
+    "express-session": "^1.18.1",
+    "mariadb": "^3.4.0",
+    "morgan": "^1.10.0",
+    "mult": "^0.0.16",
+    "multer": "^1.4.5-lts.1",
+    "sequelize": "^6.37.5",
+    "sqlite3": "^5.1.7"
+  },
+  "keywords": [],
+  "devDependencies": {
+    "@types/node": "^22.9.1",
+    "eslint": "^9.15.0",
+    "nodemon": "^3.1.7"
+  }
+}
