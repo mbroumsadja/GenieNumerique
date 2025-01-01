@@ -1,4 +1,3 @@
-import exp from "constants";
 import User from "../models/user.js";
 
 export const saveUser = async (req, res , next) =>{
@@ -15,6 +14,7 @@ export const saveUser = async (req, res , next) =>{
         console.log(`erreur lors de l'enregistrement`,error)
     }
 };
+
 export  const allUser = async (req, res )=>{
     const data = User.findAll();
     return data;
