@@ -18,35 +18,51 @@ const set_cookie = (res, user) => {
 
 export const signup_member = async (req, res) => {
   const {
+    matricule,
     nom,
     prenom,
     email,
+    password,
     genre,
     lien_github,
     lien_linkedin,
     lien_portfolio,
     competence,
     filiere,
+    is_admin,
+    is_ge_tech,
   } = req.body;
   try {
     const find_user = await Member.findOne({ where: { email } });
     if (find_user) {
       return res.status(400).json({
         success: false,
-        message: "Cet utilisateur existe déjà",
+        message: "Cet email est déjà utilisé",
+      });
+    }
+
+    const find_matricule = await Member.findOne({ where: { matricule } });
+    if (find_matricule) {
+      return res.status(400).json({
+        success: false,
+        message: "Ce matricule est déjà utilisé",
       });
     }
 
     const member = await Member.create({
+      matricule,
       nom,
       prenom,
       email,
+      password,
       genre,
       lien_github,
       lien_linkedin,
       lien_portfolio,
       competence,
       filiere,
+      is_admin: is_admin || false,
+      is_ge_tech: is_ge_tech || false,
     });
 
     set_cookie(res, member);
@@ -67,12 +83,24 @@ export const signup_member = async (req, res) => {
 
 export const login_member = async (req, res) => {
   try {
-    const { email, nom } = req.body;
-    const find_user = await Member.findOne({ where: { email, nom } });
+    const { matricule, password } = req.body;
+    const find_user = await Member.findOne({ where: { matricule } });
     if (!find_user) {
       return res.status(401).json({
         success: false,
-        message: "Utilisateur non trouvé",
+        message: "Matricule incorrect",
+      });
+    }
+    if (!find_user.is_admin) {
+      return res.status(403).json({
+        success: false,
+        message: "Réservé aux administrateurs",
+      });
+    }
+    if (!(await find_user.verifyPassword(password))) {
+      return res.status(401).json({
+        success: false,
+        message: "Mot de passe incorrect",
       });
     }
 
@@ -146,7 +174,7 @@ export const delete_member = async (req, res) => {
 
 export const update_member = async (req, res) => {
   const { id } = req.params;
-  const image_profile = req.file ? `/uploads/user/${req.file.filename}` : undefined;
+  const image_profile = req.file ? `/uploads/${req.file.filename}` : undefined;
   try {
     const find_user = await Member.findOne({ where: { id } });
     if (!find_user) {
@@ -174,25 +202,22 @@ export const update_member = async (req, res) => {
       message: "Erreur interne du serveur",
       error: error.message,
     });
-  };
+  }
 };
 
 export const recuperation_membre = async (req, res) => {
   try {
-    const admins = await Member.findAll({ where: { is_admin: true } });
-    const members = await Member.findAll({ where: { is_admin: false } });
-    res.status(200).json({
+    const members = await Member.findAll();
+    return res.json({
       success: true,
-      message: "Membres récupérés",
-      data: { admins, members },
+      data: {
+        admins: members.filter((m) => m.is_admin),
+        members: members.filter((m) => !m.is_admin),
+      },
     });
   } catch (error) {
-    console.error("Erreur recuperation_membre:", error);
-    res.status(500).json({
-      success: false,
-      message: "Erreur interne du serveur",
-      error: error.message,
-    });
+    console.error("Fetch members error:", error);
+    return res.status(500).json({ success: false, message: "Erreur serveur" });
   }
 };
 

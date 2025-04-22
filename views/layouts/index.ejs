@@ -1,124 +1,818 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/css/style.css">
-    <title>Club genie numerique | Membre</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Schedule Collab | Membres</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/toastify-js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/toastify-js/src/toastify.min.css">
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f5f5;
+    }
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      margin-bottom: 2rem;
+      background-color: #fff;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    header span {
+      font-size: 20px;
+      font-family: 'Times New Roman', Times;
+      font-weight: 600;
+      color: #000;
+    }
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 1rem 2rem;
+    }
+    .section-title h1 {
+      font-size: 1.5rem;
+      color: #333;
+      border-bottom: 2px solid #ddd;
+      padding-bottom: 0.5rem;
+      margin-top: 1rem;
+    }
+    .row {
+      width: 90vw;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      margin-top: 1rem;
+      margin-bottom: 1rem;
+    }
+    .profile {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0.5rem;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      background-color: #fff;
+      transition: transform 0.2s, box-shadow 0.2s;
+      cursor: pointer;
+      width: 15rem;
+    }
+    .profile:hover {
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    }
+    .profile-image {
+      height: 10rem;
+      width: 10rem;
+      border-radius: 50%;
+      background: #e0e0e0;
+      margin-bottom: 0.5rem;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #666;
+    }
+    .profile img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .profile span {
+      text-align: center;
+      background: #f0f0f0;
+      border-radius: 5px;
+      padding: 0.3rem 1rem;
+      font-size: 14px;
+      font-family: system-ui;
+      font-weight: 500;
+      color: #333;
+      width: 100%;
+    }
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.5);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      z-index: 1000;
+    }
+    .modal-content {
+      background: white;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 600px;
+      max-height: 90vh;
+      overflow-y: auto;
+      padding: 1.5rem;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3);
+    }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1.5rem;
+      border-bottom: 1px solid #eee;
+      padding-bottom: 1rem;
+    }
+    .modal-header h2 {
+      font-size: 1.5rem;
+      color: #333;
+    }
+    .close-button {
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: #666;
+    }
+    .close-button:hover {
+      color: #333;
+    }
+    .modal-profile-image {
+      width: 170px;
+      height: 170px;
+      border-radius: 50%;
+      background: #e0e0e0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 2rem;
+      font-weight: bold;
+      color: #666;
+    }
+    .modal-profile-image img {
+      width: 100%;
+      height: 100%;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+    .modal-links-section a {
+      text-decoration: none;
+      color: #0066cc;
+      background: #f0f7ff;
+      padding: 0.5rem 1rem;
+      border-radius: 20px;
+      font-size: 0.9rem;
+    }
+    .modal-links-section a:hover {
+      background: #e0f0ff;
+    }
+    .spinner {
+      border: 4px solid rgba(0, 0, 0, 0.1);
+      border-left-color: #3b82f6;
+      border-radius: 50%;
+      width: 24px;
+      height: 24px;
+      animation: spin 1s linear infinite;
+      margin: 0 auto;
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+    .dark body {
+      background: #1a202c;
+    }
+    .dark header {
+      background: #2d3748;
+    }
+    .dark .profile {
+      background: #2d3748;
+      border-color: #4a5568;
+    }
+    .dark .profile span {
+      background: #4a5568;
+      color: #e2e8f0;
+    }
+    .dark .modal-content {
+      background: #2d3748;
+      color: #e2e8f0;
+    }
+    @media (max-width: 768px) {
+      .row { justify-content: center; }
+      .modal-profile-section { flex-direction: column; align-items: center; text-align: center; }
+      .modal-main-info { margin-top: 1rem; }
+      .modal-dates-section { flex-direction: column; text-align: center; gap: 0.5rem; }
+    }
+    @media (max-width: 480px) {
+      .profile { width: 15rem; }
+      .profile-image { height: 9rem; width: 9rem; }
+      .modal-content { width: 95%; padding: 1rem; }
+    }
+  </style>
 </head>
-<body>
+<body class="transition-colors duration-300">
+  <!-- Login Page -->
+  <div id="loginPage" class="flex items-center justify-center min-h-screen">
+    <div class="bg-white dark:bg-gray-800 p-8 rounded-xl shadow-xl w-full max-w-sm">
+      <h1 class="text-2xl font-bold mb-6 text-center text-gray-800 dark:text-gray-100">Connexion Admin - Schedule Collab</h1>
+      <form id="loginForm">
+        <div class="mb-4">
+          <label class="block mb-1 font-medium text-gray-700 dark:text-gray-300">Matricule</label>
+          <input type="text" id="matricule" class="w-full border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100" required placeholder="cm-uga-23fs0295" aria-label="Matricule">
+        </div>
+        <div class="mb-4">
+          <label class="block mb-1 font-medium text-gray-700 dark:text-gray-300">Mot de passe</label>
+          <input type="password" id="password" class="w-full border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100" required aria-label="Mot de passe">
+        </div>
+        <button type="submit" class="w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition">Se connecter</button>
+      </form>
+    </div>
+  </div>
 
-    <header>
-        <span>CLUB DES GENIE NUMERIQUE</span>
-        <span>ADMINISTRATION</span>
+  <!-- Main Content -->
+  <div id="mainContent" class="hidden">
+    <header class="flex justify-between items-center">
+      <span>WORK SPACE SCHEDULE</span>
+      <div class="flex items-center space-x-4">
+        <button id="toggleTheme" class="p-2 rounded-full bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-100" aria-label="Basculer thème">
+          <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" /></svg>
+        </button>
+        <button id="logoutBtn" class="bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition">Déconnexion</button>
+      </div>
     </header>
-    <div class="container" id="container">
-        <div class="admin">
-            <div class="row" id="row">
-                <div class="profile" id="profile">
-                    <img src="" id="image" class="image" alt="" srcset="">
-                    <span id="info">nom, filiere</span>
-                </div>
-            </div>
-            <div class="row">
-                <div class="profile">
-                    <button type="button"></button>
-                    <span>nom , filiere</span>
-                </div>
-                <div class="profile">
-                    <button type="button"></button>
-                    <span>nom , filiere</span>
-                </div>
-                <div class="profile">
-                    <button type="button"></button>
-                    <span>nom , filiere</span>
-                </div>
-            </div>
-            <div class="row">
-                <div class="profile">
-                    <button type="button"></button>
-                    <span>nom , filiere</span>
-                </div>
-                <div class="profile">
-                    <button type="button"></button>
-                    <span>nom , filiere</span>
-                </div>
-                <div class="profile">
-                    <button type="button"></button>
-                    <span>nom , filiere</span>
-                </div>
-                <div class="profile">
-                    <button type="button"></button>
-                    <span>nom , filiere</span>
-                </div>
-                <div class="profile">
-                    <button type="button"></button>
-                    <span>nom , filiere</span>
-                </div>
-                <div class="profile">
-                    <button type="button"></button>
-                    <span>nom , filiere</span>
-                </div>
-            </div>
+
+    <div class="container">
+      <!-- Navigation -->
+      <div class="flex justify-between items-center gap-3 mb-6 w-[90vw]">
+        <a href="https://schedule-trello.onrender.com" target="_blank" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">Schedule Workspace</a>
+        <button id="addMemberBtn" class="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition">+ Nouveau Membre</button>
+      </div>
+
+      <!-- Search and Sort -->
+      <div class="flex flex-col sm:flex-row justify-between items-center mb-6 gap-4 w-[90vw]">
+        <input id="searchInput" type="text" class="w-full sm:w-1/3 border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100" placeholder="Rechercher par nom, filière, compétence..." aria-label="Rechercher un membre">
+        <div class="flex items-center space-x-4">
+          <select id="sortSelect" class="border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100">
+            <option value="name">Trier par nom</option>
+            <option value="createdAt">Trier par date d’inscription</option>
+            <option value="role">Trier par rôle</option>
+          </select>
+          <button id="exportCsvBtn" class="bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 transition">Exporter CSV</button>
         </div>
-        <span class="texte"><h1>MEMBERS</h1></span>
-        <div class="membre">
-            
-            <div class="row">
-                <div class="profile">
-                    <button type="button"></button>
-                    <span>nom , filiere</span>
-                </div>
-                <div class="profile">
-                    <button type="button"></button>
-                    <span>nom , filiere</span>
-                </div>
-                <div class="profile">
-                    <button type="button"></button>
-                    <span>nom , filiere</span>
-                </div>
-                <div class="profile">
-                    <button type="button"></button>
-                    <span>nom , filiere</span>
-                </div>
-                <div class="profile">
-                    <button type="button"></button>
-                    <span>nom , filiere</span>
-                </div>
-                <div class="profile">
-                    <button type="button"></button>
-                    <span>nom , filiere</span>
-                </div>
-            </div>
+      </div>
+
+      <!-- Admins Section -->
+      <div class="section-title w-[90vw]">
+        <h1>ADMINISTRATEURS</h1>
+      </div>
+      <div class="admin w-[90vw]">
+        <div class="row" id="admin-container">
+          <div class="spinner"></div>
         </div>
-        <div class="row">
-            <div class="profile">
-                <button type="button"></button>
-                <span>nom , filiere</span>
-            </div>
-            <div class="profile">
-                <button type="button"></button>
-                <span>nom , filiere</span>
-            </div>
-            <div class="profile">
-                <button type="button"></button>
-                <span>nom , filiere</span>
-            </div>
-            <div class="profile">
-                <button type="button"></button>
-                <span>nom , filiere</span>
-            </div>
-            <div class="profile">
-                <button type="button"></button>
-                <span>nom , filiere</span>
-            </div>
-            <div class="profile">
-                <button type="button"></button>
-                <span>nom , filiere</span>
-            </div>
+      </div>
+
+      <!-- Members Section -->
+      <div class="section-title w-[90vw]">
+        <h1>MEMBRES</h1>
+      </div>
+      <div class="membre w-[90vw]">
+        <div class="row" id="members-container">
+          <div class="spinner"></div>
         </div>
+      </div>
     </div>
+  </div>
+
+  <!-- Add/Edit Member Modal -->
+  <div id="memberModal" class="hidden fixed inset-0 bg-gray-800 bg-opacity-50 flex items-center justify-center modal-overlay">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 id="modalTitle">Ajouter un Membre</h2>
+        <button class="close-button" aria-label="Fermer la modale">×</button>
+      </div>
+      <form id="memberForm" enctype="multipart/form-data">
+        <input type="hidden" id="memberId">
+        <div class="mb-4">
+          <label class="block mb-1 font-medium text-gray-700 dark:text-gray-300">Matricule</label>
+          <input type="text" id="matricule" class="w-full border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100" required placeholder="cm-uga-23fsXXXX" aria-label="Matricule">
+        </div>
+        <div class="mb-4">
+          <label class="block mb-1 font-medium text-gray-700 dark:text-gray-300">Nom</label>
+          <input type="text" id="nom" class="w-full border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100" required aria-label="Nom">
+        </div>
+        <div class="mb-4">
+          <label class="block mb-1 font-medium text-gray-700 dark:text-gray-300">Prénom</label>
+          <input type="text" id="prenom" class="w-full border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100" required aria-label="Prénom">
+        </div>
+        <div class="mb-4">
+          <label class="block mb-1 font-medium text-gray-700 dark:text-gray-300">Email</label>
+          <input type="email" id="email" class="w-full border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100" required aria-label="Email">
+        </div>
+        <div class="mb-4">
+          <label class="block mb-1 font-medium text-gray-700 dark:text-gray-300">Mot de passe</label>
+          <input type="password" id="password" class="w-full border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100" aria-label="Mot de passe">
+        </div>
+        <div class="mb-4">
+          <label class="block mb-1 font-medium text-gray-700 dark:text-gray-300">Genre</label>
+          <select id="genre" class="w-full border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100" required aria-label="Genre">
+            <option value="Homme">Homme</option>
+            <option value="Femme">Femme</option>
+            <option value="Autre">Autre</option>
+          </select>
+        </div>
+        <div class="mb-4">
+          <label class="block mb-1 font-medium text-gray-700 dark:text-gray-300">Filière</label>
+          <input type="text" id="filiere" class="w-full border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100" required aria-label="Filière">
+        </div>
+        <div class="mb-4">
+          <label class="block mb-1 font-medium text-gray-700 dark:text-gray-300">Compétences</label>
+          <textarea id="competence" class="w-full border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100" aria-label="Compétences"></textarea>
+        </div>
+        <div class="mb-4">
+          <label class="block mb-1 font-medium text-gray-700 dark:text-gray-300">Lien GitHub</label>
+          <input type="url" id="lien_github" class="w-full border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100" aria-label="Lien GitHub">
+        </div>
+        <div class="mb-4">
+          <label class="block mb-1 font-medium text-gray-700 dark:text-gray-300">Lien LinkedIn</label>
+          <input type="url" id="lien_linkedin" class="w-full border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100" aria-label="Lien LinkedIn">
+        </div>
+        <div class="mb-4">
+          <label class="block mb-1 font-medium text-gray-700 dark:text-gray-300">Lien Portfolio</label>
+          <input type="url" id="lien_portfolio" class="w-full border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100" aria-label="Lien Portfolio">
+        </div>
+        <div class="mb-4">
+          <label class="block mb-1 font-medium text-gray-700 dark:text-gray-300">Photo de profil</label>
+          <input type="file" id="photo" accept="image/jpeg,image/png" class="w-full border p-3 rounded-lg dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100" aria-label="Photo de profil">
+        </div>
+        <div class="mb-4">
+          <label class="block mb-1 font-medium text-gray-700 dark:text-gray-300">Rôle</label>
+          <select id="is_admin" class="w-full border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100" aria-label="Rôle">
+            <option value="0">Membre</option>
+            <option value="1">Administrateur</option>
+          </select>
+        </div>
+        <div class="mb-4">
+          <label class="block mb-1 font-medium text-gray-700 dark:text-gray-300">GeTech 2025</label>
+          <select id="is_ge_tech" class="w-full border p-3 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:text-gray-100" aria-label="GeTech">
+            <option value="0">Non participant</option>
+            <option value="1">Participant</option>
+          </select>
+        </div>
+        <div class="flex justify-end space-x-3">
+          <button type="button" id="cancelMember" class="bg-gray-500 text-white px-4 py-2 rounded-lg hover:bg-gray-600 transition">Annuler</button>
+          <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition">Enregistrer</button>
+        </div>
+      </form>
     </div>
-    <script type="module"  defer src="/js/index.js"></script>
+  </div>
+
+  <script>
+    const API_URL = 'http://localhost:4000';
+    let membersData = { admins: [], members: [] };
+
+    // Check auth
+    function checkAuth() {
+      const token = localStorage.getItem('token');
+      if (token) {
+        document.getElementById('mainContent').classList.remove('hidden');
+        document.getElementById('loginPage').classList.add('hidden');
+        fetchMembersData();
+      } else {
+        document.getElementById('mainContent').classList.add('hidden');
+        document.getElementById('loginPage').classList.remove('hidden');
+      }
+    }
+
+    // Login
+    document.getElementById('loginForm').addEventListener('submit', async e => {
+      e.preventDefault();
+      const matricule = document.getElementById('matricule').value;
+      const password = document.getElementById('password').value;
+      try {
+        const response = await fetch(`${API_URL}/gn/login`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ matricule, password }),
+          credentials: 'include',
+        });
+        const data = await response.json();
+        if (data.success) {
+          localStorage.setItem('token', data.data.token || response.headers.get('set-cookie')?.match(/token=([^;]+)/)?.[1]);
+          localStorage.setItem('user', JSON.stringify(data.data));
+          checkAuth();
+          showToast('Connexion réussie !', 'success');
+        } else {
+          showToast(data.message || 'Erreur de connexion', 'error');
+        }
+      } catch (error) {
+        console.error('Login error:', error);
+        showToast('Erreur serveur. Réessaie !', 'error');
+      }
+    });
+
+    // Logout
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      document.cookie = 'token=; Max-Age=0; path=/';
+      checkAuth();
+      showToast('Déconnexion réussie', 'success');
+    });
+
+    // Theme toggle
+    document.getElementById('toggleTheme').addEventListener('click', () => {
+      document.body.classList.toggle('dark');
+      localStorage.setItem('theme', document.body.classList.contains('dark') ? 'dark' : 'light');
+    });
+
+    // Load theme
+    if (localStorage.getItem('theme') === 'dark') {
+      document.body.classList.add('dark');
+    }
+
+    // Fetch members
+    async function fetchMembersData() {
+      const adminContainer = document.getElementById('admin-container');
+      const memberContainer = document.getElementById('members-container');
+      adminContainer.innerHTML = '<div class="spinner"></div>';
+      memberContainer.innerHTML = '<div class="spinner"></div>';
+
+      try {
+        const response = await fetch(`${API_URL}/gn/data`, {
+          headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
+          credentials: 'include',
+        });
+        if (!response.ok) throw new Error('Erreur réseau');
+        const data = await response.json();
+        if (data.success) {
+          membersData = {
+            admins: data.data.admins,
+            members: data.data.members,
+          };
+          displayAdmins(data.data.admins);
+          displayMembers(data.data.members);
+        } else {
+          showToast(data.message, 'error');
+        }
+      } catch (error) {
+        console.error('Fetch error:', error);
+        showToast('Impossible de charger les membres', 'error');
+        adminContainer.innerHTML = '<p class="text-red-500">Erreur de chargement</p>';
+        memberContainer.innerHTML = '<p class="text-red-500">Erreur de chargement</p>';
+      }
+    }
+
+    // Display admins
+    function displayAdmins(admins) {
+      const adminContainer = document.getElementById('admin-container');
+      adminContainer.innerHTML = '';
+      admins.forEach(admin => {
+        adminContainer.appendChild(createProfileElement(admin));
+      });
+    }
+
+    // Display members
+    function displayMembers(members) {
+      const memberContainer = document.getElementById('members-container');
+      memberContainer.innerHTML = '';
+      members.forEach(member => {
+        memberContainer.appendChild(createProfileElement(member));
+      });
+    }
+
+    // Create profile element
+    function createProfileElement(userData) {
+      const profileDiv = document.createElement('div');
+      profileDiv.className = 'profile';
+      profileDiv.setAttribute('data-id', userData.id);
+      profileDiv.setAttribute('role', 'button');
+      profileDiv.setAttribute('aria-label', `Voir le profil de ${userData.nom} ${userData.prenom}`);
+
+      const imageDiv = document.createElement('div');
+      imageDiv.className = 'profile-image';
+      if (userData.image_profile) {
+        const img = document.createElement('img');
+        img.src = `${API_URL}${userData.image_profile}`;
+        img.alt = `${userData.nom} ${userData.prenom}`;
+        imageDiv.appendChild(img);
+      } else {
+        imageDiv.textContent = getInitials(userData.nom, userData.prenom);
+      }
+
+      const infoSpan = document.createElement('span');
+      infoSpan.textContent = `${userData.nom}, ${userData.filiere}`;
+
+      const geTechTag = userData.is_ge_tech ? `<span class="inline-block mb-3 bg-blue-100 text-blue-800 text-xs px-2 py-1 rounded-full">GeTech 2025</span>` : '';
+
+      profileDiv.innerHTML += geTechTag;
+      profileDiv.appendChild(imageDiv);
+      profileDiv.appendChild(infoSpan);
+
+      profileDiv.addEventListener('click', () => showMemberDetails(userData));
+      return profileDiv;
+    }
+
+    // Get initials
+    function getInitials(nom, prenom) {
+      return `${prenom.charAt(0)}${nom.charAt(0)}`.toUpperCase();
+    }
+
+    // Show member details
+    function showMemberDetails(userData) {
+      const existingModal = document.getElementById('memberDetailsModal');
+      if (existingModal) existingModal.remove();
+
+      const modalOverlay = document.createElement('div');
+      modalOverlay.className = 'modal-overlay';
+      modalOverlay.id = 'memberDetailsModal';
+      modalOverlay.setAttribute('role', 'dialog');
+      modalOverlay.setAttribute('aria-labelledby', 'modalTitle');
+
+      const modalContent = document.createElement('div');
+      modalContent.className = 'modal-content';
+
+      const modalHeader = document.createElement('div');
+      modalHeader.className = 'modal-header';
+      const modalTitle = document.createElement('h2');
+      modalTitle.id = 'modalTitle';
+      modalTitle.textContent = `${userData.prenom} ${userData.nom}`;
+      const closeButton = document.createElement('button');
+      closeButton.className = 'close-button';
+      closeButton.innerHTML = '×';
+      closeButton.setAttribute('aria-label', 'Fermer la modale');
+      closeButton.addEventListener('click', () => modalOverlay.remove());
+      modalHeader.appendChild(modalTitle);
+      modalHeader.appendChild(closeButton);
+
+      const profileSection = document.createElement('div');
+      profileSection.className = 'modal-profile-section flex items-center gap-4 mb-4';
+      const profileImage = document.createElement('div');
+      profileImage.className = 'modal-profile-image';
+      if (userData.image_profile) {
+        const img = document.createElement('img');
+        img.src = `${API_URL}${userData.image_profile}`;
+        img.alt = `${userData.nom} ${userData.prenom}`;
+        profileImage.appendChild(img);
+      } else {
+        profileImage.textContent = getInitials(userData.nom, userData.prenom);
+      }
+
+      const mainInfo = document.createElement('div');
+      mainInfo.className = 'modal-main-info';
+      const infoList = [
+        { label: 'Matricule', value: userData.matricule },
+        { label: 'Email', value: userData.email },
+        { label: 'Genre', value: userData.genre },
+        { label: 'Filière', value: userData.filiere },
+        { label: 'Rôle', value: userData.is_admin ? 'Administrateur' : 'Membre' },
+        { label: 'GeTech', value: userData.is_ge_tech ? 'Participant 2025' : 'Non participant' },
+      ];
+      infoList.forEach(item => {
+        const p = document.createElement('p');
+        p.innerHTML = `<strong>${item.label}:</strong> ${item.value || 'Non spécifié'}`;
+        mainInfo.appendChild(p);
+      });
+      profileSection.appendChild(profileImage);
+      profileSection.appendChild(mainInfo);
+
+      const linksSection = document.createElement('div');
+      linksSection.className = 'modal-links-section flex gap-3 mb-4 flex-wrap';
+      const linksList = [
+        { label: 'GitHub', value: userData.lien_github, icon: '🔗' },
+        { label: 'LinkedIn', value: userData.lien_linkedin, icon: '🔗' },
+        { label: 'Portfolio', value: userData.lien_portfolio, icon: '🔗' },
+      ];
+      linksList.forEach(item => {
+        if (item.value) {
+          const a = document.createElement('a');
+          a.href = item.value.startsWith('http') ? item.value : `https://${item.value}`;
+          a.target = '_blank';
+          a.innerHTML = `${item.icon} ${item.label}`;
+          linksSection.appendChild(a);
+        }
+      });
+
+      const skillsSection = document.createElement('div');
+      skillsSection.className = 'modal-skills-section mb-4';
+      const skillsTitle = document.createElement('h3');
+      skillsTitle.textContent = 'Compétences';
+      const skillsContent = document.createElement('p');
+      skillsContent.textContent = userData.competence || 'Aucune compétence spécifiée';
+      skillsSection.appendChild(skillsTitle);
+      skillsSection.appendChild(skillsContent);
+
+      const datesSection = document.createElement('div');
+      datesSection.className = 'modal-dates-section flex justify-between text-sm text-gray-500 dark:text-gray-400 mb-4';
+      const createdDate = new Date(userData.createdAt);
+      const updatedDate = new Date(userData.updatedAt);
+      datesSection.innerHTML = `
+        <p>Inscrit le: ${createdDate.toLocaleDateString('fr-FR')}</p>
+        <p>Mis à jour: ${updatedDate.toLocaleDateString('fr-FR')}</p>
+      `;
+
+      const actionsSection = document.createElement('div');
+      actionsSection.className = 'modal-actions-section flex justify-end gap-3';
+      const editButton = document.createElement('button');
+      editButton.className = 'edit-button';
+      editButton.textContent = 'Modifier';
+      editButton.addEventListener('click', () => {
+        openMemberModal(userData, 'Modifier le Profil');
+        modalOverlay.remove();
+      });
+      const deleteButton = document.createElement('button');
+      deleteButton.className = 'bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition';
+      deleteButton.textContent = 'Supprimer';
+      deleteButton.addEventListener('click', async () => {
+        if (confirm('Voulez-vous vraiment supprimer ce membre ?')) {
+          try {
+            const response = await fetch(`${API_URL}/gn/delete/${userData.id}`, {
+              method: 'DELETE',
+              headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
+              credentials: 'include',
+            });
+            if (response.ok) {
+              modalOverlay.remove();
+              fetchMembersData();
+              showToast('Membre supprimé !', 'success');
+            } else {
+              showToast('Erreur lors de la suppression', 'error');
+            }
+          } catch (error) {
+            showToast('Erreur serveur', 'error');
+          }
+        }
+      });
+      actionsSection.appendChild(editButton);
+      actionsSection.appendChild(deleteButton);
+
+      modalContent.appendChild(modalHeader);
+      modalContent.appendChild(profileSection);
+      modalContent.appendChild(linksSection);
+      modalContent.appendChild(skillsSection);
+      modalContent.appendChild(datesSection);
+      modalContent.appendChild(actionsSection);
+      modalOverlay.appendChild(modalContent);
+      document.body.appendChild(modalOverlay);
+
+      modalOverlay.addEventListener('click', e => {
+        if (e.target.classList.contains('modal-overlay')) modalOverlay.remove();
+      });
+    }
+
+    // Open member modal
+    function openMemberModal(userData = null, title = 'Ajouter un Membre') {
+      const modal = document.getElementById('memberModal');
+      const form = document.getElementById('memberForm');
+      const modalTitle = document.getElementById('modalTitle');
+      modalTitle.textContent = title;
+
+      if (userData) {
+        document.getElementById('memberId').value = userData.id;
+        document.getElementById('matricule').value = userData.matricule;
+        document.getElementById('nom').value = userData.nom;
+        document.getElementById('prenom').value = userData.prenom;
+        document.getElementById('email').value = userData.email;
+        document.getElementById('password').placeholder = 'Laisser vide pour ne pas modifier';
+        document.getElementById('genre').value = userData.genre;
+        document.getElementById('filiere').value = userData.filiere;
+        document.getElementById('competence').value = userData.competence || '';
+        document.getElementById('lien_github').value = userData.lien_github || '';
+        document.getElementById('lien_linkedin').value = userData.lien_linkedin || '';
+        document.getElementById('lien_portfolio').value = userData.lien_portfolio || '';
+        document.getElementById('is_admin').value = userData.is_admin ? '1' : '0';
+        document.getElementById('is_ge_tech').value = userData.is_ge_tech ? '1' : '0';
+      } else {
+        form.reset();
+        document.getElementById('memberId').value = '';
+        document.getElementById('password').required = true;
+      }
+
+      modal.classList.remove('hidden');
+    }
+
+    // Add/Edit member
+    document.getElementById('addMemberBtn').addEventListener('click', () => openMemberModal());
+    document.getElementById('cancelMember').addEventListener('click', () => {
+      document.getElementById('memberModal').classList.add('hidden');
+      document.getElementById('memberForm').reset();
+    });
+
+    document.getElementById('memberForm').addEventListener('submit', async e => {
+      e.preventDefault();
+      const memberId = document.getElementById('memberId').value;
+      const formData = new FormData();
+      formData.append('matricule', document.getElementById('matricule').value);
+      formData.append('nom', document.getElementById('nom').value);
+      formData.append('prenom', document.getElementById('prenom').value);
+      formData.append('email', document.getElementById('email').value);
+      if (document.getElementById('password').value) {
+        formData.append('password', document.getElementById('password').value);
+      }
+      formData.append('genre', document.getElementById('genre').value);
+      formData.append('filiere', document.getElementById('filiere').value);
+      formData.append('competence', document.getElementById('competence').value);
+      formData.append('lien_github', document.getElementById('lien_github').value);
+      formData.append('lien_linkedin', document.getElementById('lien_linkedin').value);
+      formData.append('lien_portfolio', document.getElementById('lien_portfolio').value);
+      formData.append('is_admin', document.getElementById('is_admin').value);
+      formData.append('is_ge_tech', document.getElementById('is_ge_tech').value);
+      const photo = document.getElementById('photo').files[0];
+      if (photo) formData.append('photo', photo);
+
+      try {
+        const url = memberId ? `${API_URL}/gn/update/${memberId}` : `${API_URL}/gn/signup`;
+        const method = memberId ? 'PUT' : 'POST';
+        const response = await fetch(url, {
+          method,
+          headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
+          body: formData,
+          credentials: 'include',
+        });
+        const data = await response.json();
+        if (data.success) {
+          document.getElementById('memberModal').classList.add('hidden');
+          document.getElementById('memberForm').reset();
+          fetchMembersData();
+          showToast(memberId ? 'Profil mis à jour !' : 'Membre ajouté !', 'success');
+        } else {
+          showToast(data.message || 'Erreur lors de l’opération', 'error');
+        }
+      } catch (error) {
+        console.error('Member error:', error);
+        showToast('Erreur serveur', 'error');
+      }
+    });
+
+    // Search and sort
+    function filterAndSortMembers() {
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+      const sortBy = document.getElementById('sortSelect').value;
+
+      const filteredAdmins = membersData.admins.filter(user =>
+        user.nom.toLowerCase().includes(searchTerm) ||
+        user.prenom.toLowerCase().includes(searchTerm) ||
+        user.filiere.toLowerCase().includes(searchTerm) ||
+        (user.competence && user.competence.toLowerCase().includes(searchTerm))
+      );
+      const filteredMembers = membersData.members.filter(user =>
+        user.nom.toLowerCase().includes(searchTerm) ||
+        user.prenom.toLowerCase().includes(searchTerm) ||
+        user.filiere.toLowerCase().includes(searchTerm) ||
+        (user.competence && user.competence.toLowerCase().includes(searchTerm))
+      );
+
+      const sortFunction = (a, b) => {
+        if (sortBy === 'name') return `${a.prenom} ${a.nom}`.localeCompare(`${b.prenom} ${b.nom}`);
+        if (sortBy === 'createdAt') return new Date(a.createdAt) - new Date(b.createdAt);
+        if (sortBy === 'role') return a.is_admin === b.is_admin ? 0 : a.is_admin ? -1 : 1;
+      };
+
+      displayAdmins(filteredAdmins.sort(sortFunction));
+      displayMembers(filteredMembers.sort(sortFunction));
+    }
+
+    document.getElementById('searchInput').addEventListener('input', filterAndSortMembers);
+    document.getElementById('sortSelect').addEventListener('change', filterAndSortMembers);
+
+    // Export CSV
+    document.getElementById('exportCsvBtn').addEventListener('click', () => {
+      const allMembers = [...membersData.admins, ...membersData.members];
+      const csv = [
+        'Matricule,Nom,Prénom,Email,Filière,Compétences,Rôle,GeTech,Inscrit le',
+        ...allMembers.map(user => [
+          user.matricule,
+          user.nom,
+          user.prenom,
+          user.email,
+          user.filiere,
+          `"${user.competence || ''}"`,
+          user.is_admin ? 'Administrateur' : 'Membre',
+          user.is_ge_tech ? 'Participant' : 'Non participant',
+          new Date(user.createdAt).toLocaleDateString('fr-FR'),
+        ].join(','))
+      ].join('\n');
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'membres_club_genie_numerique.csv';
+      a.click();
+      URL.revokeObjectURL(url);
+      showToast('Liste exportée en CSV !', 'success');
+    });
+
+    // Toast notification
+    function showToast(message, type) {
+      Toastify({
+        text: message,
+        duration: 3000,
+        gravity: 'top',
+        position: 'right',
+        "style.background": type === 'success' ? '#10b981' : '#ef4444',
+      }).showToast();
+    }
+
+    // Init
+    checkAuth();
+  </script>
 </body>
 </html>

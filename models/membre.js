@@ -1,14 +1,21 @@
 import { DataTypes } from "sequelize";
 import sequelize from "../config/db.js";
+import bcrypt from "bcrypt";
 
 const Member = sequelize.define(
-  "utilisateurs",
+  "members",
   {
     id: {
       type: DataTypes.UUID,
       primaryKey: true,
       allowNull: false,
       defaultValue: DataTypes.UUIDV4,
+    },
+    matricule: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+      validate: { len: [10, 50] }, // Ex. : cm-uga-23fs0295
     },
     nom: {
       type: DataTypes.STRING,
@@ -26,6 +33,10 @@ const Member = sequelize.define(
       unique: true,
       validate: { isEmail: true },
     },
+    password: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
     genre: {
       type: DataTypes.STRING,
       allowNull: false,
@@ -34,13 +45,11 @@ const Member = sequelize.define(
     lien_github: {
       type: DataTypes.STRING,
       allowNull: true,
-      unique: true,
       validate: { isUrl: true },
     },
     lien_linkedin: {
       type: DataTypes.STRING,
       allowNull: true,
-      unique: true,
       validate: { isUrl: true },
     },
     lien_portfolio: {
@@ -62,16 +71,35 @@ const Member = sequelize.define(
       allowNull: true,
     },
     is_admin: {
-      type: DataTypes.BOOLEAN, // Changé en BOOLEAN
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false,
+    },
+    is_ge_tech: {
+      type: DataTypes.BOOLEAN,
       allowNull: false,
       defaultValue: false,
     },
   },
   {
     timestamps: true,
+    hooks: {
+      beforeCreate: async (member) => {
+        if (member.password) {
+          member.password = await bcrypt.hash(member.password, 10);
+        }
+      },
+      beforeUpdate: async (member) => {
+        if (member.changed('password')) {
+          member.password = await bcrypt.hash(member.password, 10);
+        }
+      },
+    },
   }
 );
 
-sequelize.sync({ force: false });
+Member.prototype.verifyPassword = async function (password) {
+  return await bcrypt.compare(password, this.password);
+};
 
 export default Member;

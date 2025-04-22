@@ -1,41 +1,38 @@
-import Joi from "joi";
+import { check, validationResult } from "express-validator";
 
 const schemas = {
-  signup: Joi.object({
-    nom: Joi.string().min(2).max(50).required(),
-    prenom: Joi.string().min(2).max(50).required(),
-    email: Joi.string().email().required(),
-    genre: Joi.string().valid("Homme", "Femme", "Autre").required(),
-    lien_github: Joi.string().uri().optional(),
-    lien_linkedin: Joi.string().uri().optional(),
-    lien_portfolio: Joi.string().uri().optional(),
-    filiere: Joi.string().min(2).max(100).required(),
-    competence: Joi.string().optional(),
-  }),
-  login: Joi.object({
-    email: Joi.string().email().required(),
-    nom: Joi.string().min(2).max(50).required(),
-  }),
-  update: Joi.object({
-    nom: Joi.string().min(2).max(50).optional(),
-    prenom: Joi.string().min(2).max(50).optional(),
-    email: Joi.string().email().optional(),
-    genre: Joi.string().valid("Homme", "Femme", "Autre").optional(),
-    lien_github: Joi.string().uri().optional(),
-    lien_linkedin: Joi.string().uri().optional(),
-    lien_portfolio: Joi.string().uri().optional(),
-    filiere: Joi.string().min(2).max(100).optional(),
-    competence: Joi.string().optional(),
-  }),
-  become_admin: Joi.object({
-    id: Joi.string().uuid().required(),
-  }),
+  login: [
+    check("matricule").isString().notEmpty().withMessage("Matricule requis"),
+    check("password").isString().notEmpty().withMessage("Mot de passe requis"),
+  ],
+  signup: [
+    check("matricule").isString().isLength({ min: 10 }).withMessage("Matricule invalide"),
+    check("nom").isString().isLength({ min: 2, max: 50 }).withMessage("Nom invalide"),
+    check("prenom").isString().isLength({ min: 2, max: 50 }).withMessage("Prénom invalide"),
+    check("email").isEmail().withMessage("Email invalide"),
+    check("password").isString().isLength({ min: 6 }).withMessage("Mot de passe trop court"),
+    check("genre").isIn(["Homme", "Femme", "Autre"]).withMessage("Genre invalide"),
+    check("filiere").isString().isLength({ min: 2 }).withMessage("Filière invalide"),
+  ],
+  update: [
+    check("nom").optional().isString().isLength({ min: 2, max: 50 }),
+    check("prenom").optional().isString().isLength({ min: 2, max: 50 }),
+    check("email").optional().isEmail(),
+    check("genre").optional().isIn(["Homme", "Femme", "Autre"]),
+    check("filiere").optional().isString().isLength({ min: 2 }),
+  ],
+  become_admin: [
+    check("id").isUUID().withMessage("ID invalide"),
+  ],
 };
 
-export const validate = (schema) => (req, res, next) => {
-  const { error } = schemas[schema].validate(req.body);
-  if (error) {
-    return res.status(400).json({ success: false, message: error.details[0].message });
-  }
-  next();
-};
+export const validate = (schema) => [
+  schemas[schema],
+  (req, res, next) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ success: false, errors: errors.array() });
+    }
+    next();
+  },
+];

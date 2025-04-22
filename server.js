@@ -24,12 +24,12 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended:true}));
 app.use(morgan('dev'))
+app.use("/uploads", express.static("uploads"));
 
 app.use(session({
     secret:'love',
     saveUninitialized: false,
     resave: true,}))
-
 app.use(user)
 
 app.use((req, res, next) => {
