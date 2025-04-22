@@ -1,0 +1,48 @@
+POST  http://localhost:4000/gn/signup
+Content-Type: application/json
+
+{
+    "nom":"mbroumsadja",
+    "prenom":"emmanuel",
+    "email":"mbroumsadja@gmail.com",
+    "genre":"M",
+    "lien_github":"github.com/mbroumsadja",
+    "lien_linkedin":"linked.me/mbroumsadja",
+    "lien_portfolio":"mbroumsadja.onrender.com",
+    "competence":"web developpement backend community manager",
+    "filiere":"informatique"
+}
+###
+
+POST  http://localhost:4000/gn/login
+Content-Type: application/json
+
+{
+    "nom":"mbroumsadja",
+    "email":"mbroumsadja@gmail.com"
+}
+###
+POST  http://localhost:4000/gn/joinadmin
+Content-Type: application/json
+
+{
+    "id":"e6069146-baca-4fc4-a08b-7ed498b461e4"
+}
+###
+PUT   http://localhost:4000/gn/update/bd03b007-c14a-4f39-8679-421788fcfa4b
+Content-Type: application/json
+
+{   
+    "prenom": "thaaha"
+}
+###
+POST  http://localhost:4000/gn/signup/update/bd03b007-c14a-4f39-8679-421788fcfa4b
+Content-Type: application/json
+
+{
+     "image_profile": "mbroumsadja.png"
+}
+###
+DELETE  http://localhost:4000/gn/delete/bd03b007-c14a-4f39-8679-421788fcfa4b
+###
+GET http://localhost:4000/gn/data

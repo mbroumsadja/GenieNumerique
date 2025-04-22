@@ -1,0 +1,31 @@
+body{
+    background-color: whitesmoke;
+}
+.container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    flex-direction: column;
+}
+
+span{
+    font-size:10rem;
+}
+p{
+    font-size: 25px;
+    color: rgb(255, 166, 0);
+    font-family: system-ui;
+    text-align: center;
+}
+a{
+    font-size:20px ;
+    text-decoration: none;
+    padding: .3rem 1rem;
+    background: rgba(0, 0, 0, 0.815);
+    border-radius: 4px;
+    color: rgb(255, 255, 255);
+    letter-spacing: 1px;
+    margin-top:2rem ;
+    font-family: 'Times New Roman', Times, serif;
+}

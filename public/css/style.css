@@ -1,10 +1,75 @@
 body{
-    background-color: rgb(241, 247, 250);
+    background-color: whitesmoke;
 }
-form{
+header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: .1rem 2rem;
+    margin-bottom: 2rem;
+}
+
+header span{
+    font-size: 18px;
+    font-family: 'Times New Roman', Times;
+    font-weight: 600;
+    color: rgb(0, 0, 0);
+}
+.container{
+    display: flex;
+    justify-content:center ;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+.row{
+    height: 10rem;
+    width: 90vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+}
+.profile{
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    gap: 1rem;
+
+    padding: .2rem 2rem;
+    border: 1px solid;
+    border-radius:10px ;
+}
+
+.profile img,button{
+    height: 7rem;
+    width: 7rem;
+    border-radius: 50%;
+    border: none;
+    background: gainsboro;
+    margin-bottom: .2rem;
+    box-shadow: 0px 2px 5px white;
+    animation: clean 1s infinite ease-in-out;
+}
+.profile span{
+    text-align: center;
+    background: gray;
+    border-radius:5px ;
+    padding: .1rem 1rem;
+    font-size: 17px;
+    font-family: system-ui;
+    font-weight: 500;
+    animation: clean 1s infinite ease-in-out;
+}
+
+@keyframes clean {
+    0%{
+        background: gainsboro;
+    }
+    100%{
+        scale: .9;
+    }
+}
+.texte {
+    text-align: start;
 }

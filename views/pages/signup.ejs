@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inscription | Club Génie Numérique</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center min-h-screen">
+  <div class="bg-white p-6 rounded-lg shadow max-w-md w-full">
+    <h2 class="text-2xl font-bold mb-4 text-center">Inscription</h2>
+    <form id="signup-form" class="space-y-4">
+      <div>
+        <label class="block text-gray-700">Nom</label>
+        <input type="text" id="nom" class="w-full p-2 border rounded" required>
+      </div>
+      <div>
+        <label class="block text-gray-700">Prénom</label>
+        <input type="text" id="prenom" class="w-full p-2 border rounded" required>
+      </div>
+      <div>
+        <label class="block text-gray-700">Email</label>
+        <input type="email" id="email" class="w-full p-2 border rounded" required>
+      </div>
+      <div>
+        <label class="block text-gray-700">Genre</label>
+        <select id="genre" class="w-full p-2 border rounded" required>
+          <option value="Homme">Homme</option>
+          <option value="Femme">Femme</option>
+          <option value="Autre">Autre</option>
+        </select>
+      </div>
+      <div>
+        <label class="block text-gray-700">GitHub (optionnel)</label>
+        <input type="url" id="lien_github" class="w-full p-2 border rounded">
+      </div>
+      <div>
+        <label class="block text-gray-700">LinkedIn (optionnel)</label>
+        <input type="url" id="lien_linkedin" class="w-full p-2 border rounded">
+      </div>
+      <div>
+        <label class="block text-gray-700">Portfolio (optionnel)</label>
+        <input type="url" id="lien_portfolio" class="w-full p-2 border rounded">
+      </div>
+      <div>
+        <label class="block text-gray-700">Filière</label>
+        <input type="text" id="filiere" class="w-full p-2 border rounded" required>
+      </div>
+      <div>
+        <label class="block text-gray-700">Compétences (optionnel)</label>
+        <input type="text" id="competence" class="w-full p-2 border rounded">
+      </div>
+      <button type="submit" class="w-full bg-blue-500 text-white p-2 rounded hover:bg-blue-600">S'inscrire</button>
+    </form>
+    <p class="mt-4 text-center">
+      Déjà membre ? <a href="/gn/login" class="text-blue-500 hover:underline">Connexion</a>
+    </p>
+  </div>
+  <script type="module" src="/js/signup.js"></script>
+</body>
+</html>
