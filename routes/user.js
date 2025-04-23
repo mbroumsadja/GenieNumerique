@@ -68,5 +68,4 @@ user.get("/gn/profile", (req, res) => {
 });
 
 
-
 export default user;
